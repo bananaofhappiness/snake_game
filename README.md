@@ -14,4 +14,4 @@ then run it with
 $ cargo run
 ```
 
-Make sure you have [https://www.rust-lang.org/tools/install](rust) downloaded
+Make sure you have [rust](https://www.rust-lang.org/tools/install) downloaded
