@@ -30,6 +30,7 @@ fn main() {
     let mut world: [[usize;WIDTH];HEIGHT] = [[0;WIDTH];HEIGHT];
     let mut snake = spawn_snake(&mut world);
     let mut moving = Moving::Down;
+    let mut counter: usize = 0;
     let (tx, rx) = mpsc::channel();
     thread::spawn(move || {
         loop {
@@ -58,8 +59,9 @@ fn main() {
     loop {
         moving = rx.try_recv().unwrap_or(moving);
         display(&world);
-        next(&mut world, &mut snake, &moving);
+        next(&mut world, &mut snake, &moving, &mut counter);
         check_fruit(&mut world);
+        println!("fruits: {counter}");
         sleep(Duration::from_millis(150));
         print!("\x1B[2J\x1B[1;1H");
     }
@@ -87,7 +89,7 @@ fn spawn_snake(world: &mut [[usize;WIDTH];HEIGHT]) -> Snake {
     snake
 }
 
-fn next(world: &mut [[usize;WIDTH];HEIGHT], snake: &mut Snake, moving: &Moving) {
+fn next(world: &mut [[usize;WIDTH];HEIGHT], snake: &mut Snake, moving: &Moving, counter: &mut usize) {
     for i in 0..HEIGHT {
         for j in 0..WIDTH {
             match world[i][j] {
@@ -98,7 +100,10 @@ fn next(world: &mut [[usize;WIDTH];HEIGHT], snake: &mut Snake, moving: &Moving) 
                             world[i][j] = snake.length;
                             snake.head.x = module(snake.head.x as i8+1,WIDTH);
                             match world[snake.head.y][snake.head.x] {
-                                2 => snake.length+=1,
+                                2 => {
+                                    snake.length+=1;
+                                    *counter += 1;
+                                },
                                 0 => (),
                                 1 => (),
                                 _ => panic!(),
@@ -108,7 +113,10 @@ fn next(world: &mut [[usize;WIDTH];HEIGHT], snake: &mut Snake, moving: &Moving) 
                             world[i][j] = snake.length;
                             snake.head.x = module(snake.head.x as i8-1,WIDTH);
                             match world[snake.head.y][snake.head.x] {
-                                2 => snake.length+=1,
+                                2 => {
+                                    snake.length+=1;
+                                    *counter += 1;
+                                },
                                 0 => (),
                                 1 => (),
                                 _ => panic!(),
@@ -118,7 +126,10 @@ fn next(world: &mut [[usize;WIDTH];HEIGHT], snake: &mut Snake, moving: &Moving) 
                             world[i][j] = snake.length;
                             snake.head.y = module(snake.head.y as i8 +1,HEIGHT);
                             match world[snake.head.y][snake.head.x] {
-                                2 => snake.length+=1,
+                                2 => {
+                                    snake.length+=1;
+                                    *counter += 1;
+                                },
                                 0 => (),
                                 1 => (),
                                 _ => panic!(),
@@ -128,7 +139,10 @@ fn next(world: &mut [[usize;WIDTH];HEIGHT], snake: &mut Snake, moving: &Moving) 
                             world[i][j] = snake.length;
                             snake.head.y = module(snake.head.y as i8-1,HEIGHT);
                             match world[snake.head.y][snake.head.x] {
-                                2 => snake.length+=1,
+                                2 => {
+                                    snake.length+=1;
+                                    *counter += 1;
+                                },
                                 0 => (),
                                 1 => (),
                                 _ => panic!(),
