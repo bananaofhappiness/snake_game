@@ -13,3 +13,5 @@ then run it with
 ```console
 $ cargo run
 ```
+
+Make sure you have [https://www.rust-lang.org/tools/install](rust) downloaded
