@@ -170,15 +170,18 @@ fn check_fruit(world: &mut [[usize;WIDTH];HEIGHT]){
     for i in 0..HEIGHT {
         for j in 0..WIDTH {
             if world[i][j] == 2 {
-                let pos = Coordinates{x: j, y: i};
-                world[pos.y][pos.x] = 2;
                 return
             }
         }
     }
     let mut rng = rand::thread_rng();
-    let pos = Coordinates{x: rng.gen_range(0..WIDTH), y: rng.gen_range(0..HEIGHT)};
-    world[pos.y][pos.x] = 2;
+    loop {
+        let pos = Coordinates{x: rng.gen_range(0..WIDTH), y: rng.gen_range(0..HEIGHT)};
+        if world[pos.y][pos.x] == 0 {
+            world[pos.y][pos.x] = 2;
+            break;
+        };
+    }
 }
 
 fn module(a: i8, b:usize) -> usize {
